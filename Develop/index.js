@@ -1,18 +1,23 @@
 const Manager = require("./Manager");
 const Engineer = require("./Engineer");
 const Intern = require("./Intern");
+const render = require("./htmlRenderer");
 const inquirer = require("inquirer");
 const fs = require("fs");
 const path = require("path");
+const util = require("util");
+const OUTPUT_DIR = path.resolve(__dirname, "output");
+const outputPath = path.join(OUTPUT_DIR, "team.html");
 var counter = 1;
 var teamArray = [];
-
 var continueLoop = true;
 
+const writeFileAsync = util.promisify(fs.writeFile);
 
 async function init() 
 {
-  try {
+  try 
+  {
     // user prompts
     const { managerName, managerEmail, officeNumber } = await promptInitial();
     console.log("Name: " + managerName + "\n" + "Email: " + managerEmail + "\n" + "Office Number: " + officeNumber);
@@ -49,8 +54,8 @@ async function init()
     }
     console.log("you have dropped out of the loop");
     printInfo();
-
-//    return writeFileAsync("Readme.md", generateReadme(githubUsername, projectTitle, description, installInfo, contributing, tests, license, usage, email));
+    const html = render.render(teamArray);
+    return writeFileAsync(outputPath, html);
   }
   catch (err) 
   {
@@ -72,13 +77,17 @@ function promptInitial() {
         {
         type: "input",
         name: "managerEmail",
-        message: "What is the manager's email?"
+        message: "What is the manager's email?",
+        validate: function validateManagerEmail(managerEmail) 
+        { return managerEmail !== ""; }
         }
         ,
         {
         type: "input",
         name: "officeNumber",
-        message: "What is the manager's office number?"
+        message: "What is the manager's office number?",
+        validate: function validateOfficeNumber(officeNumber) 
+        { return officeNumber !== ""; }
         }
     ]);
 }   
@@ -97,13 +106,17 @@ function promptEngineer() {
         {
         type: "input",
         name: "engineerEmail",
-        message: "What is the engineer's email?"
+        message: "What is the engineer's email?",
+        validate: function validateEngineerEmail(engineerEmail) 
+        {   return engineerEmail !== "";  }
         }
         ,
         {
         type: "input",
         name: "userName",
-        message: "What is the engineer's GitHub Username?"
+        message: "What is the engineer's GitHub Username?",
+        validate: function validateuserName(userName) 
+        {   return userName !== "";  }
         }
     ]);
 }   
@@ -122,13 +135,17 @@ function promptIntern() {
         {
         type: "input",
         name: "internEmail",
-        message: "What is the intern's email?"
+        message: "What is the intern's email?",
+        validate: function validateInternEmail(internEmail) 
+        {   return internEmail !== "";  }
         }
         ,
         {
         type: "input",
         name: "schoolName",
-        message: "What school does the intern attend?"
+        message: "What school does the intern attend?",
+        validate: function validateschoolName(schoolName) 
+        {   return schoolName !== "";  }
         }
     ]);
 }
@@ -172,5 +189,3 @@ function printInfo()
 }
 
 init();
-
-
