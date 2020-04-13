@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\Develop\\index.js",
+            "program": "${workspaceFolder}\\Develop\\app.js",
             "console" : "integratedTerminal"
         }
     ]
