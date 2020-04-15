@@ -1,7 +1,7 @@
-const Manager = require("./Manager");
-const Engineer = require("./Engineer");
-const Intern = require("./Intern");
-const render = require("./htmlRenderer");
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const render = require("./lib/htmlRenderer");
 const inquirer = require("inquirer");
 const fs = require("fs");
 const path = require("path");
@@ -30,7 +30,6 @@ async function init()
         switch(option)
         {
             case "Engineer":
-                console.log("you choose Engineer");
                 const { engineerName, engineerEmail, userName } = await promptEngineer();
                 const engineer = new Engineer(engineerName, counter, engineerEmail, userName);
                 teamArray.push(engineer);
@@ -38,7 +37,6 @@ async function init()
                 break;
         
             case "Intern":
-                console.log("you choose Intern");
                 const { internName, internEmail, schoolName } = await promptIntern();
                 const intern = new Intern(internName, counter, internEmail, schoolName);
                 teamArray.push(intern);
@@ -68,7 +66,7 @@ function promptInitial() {
         type: "input",
         name: "managerName",
         validate: function validateManagerName(managerName) 
-        {   return managerName !== "";  }
+        { return managerName !== ""; }
         },
         {
         type: "input",
@@ -114,7 +112,8 @@ function promptEngineer() {
         validate: function validateuserName(userName) 
         {   return userName !== "";  }
         }
-    ]);
+      ]
+    );
 }   
 
 function promptIntern() {
